@@ -89,10 +89,10 @@ class EbayWatcher:
                         html = response.read().decode('utf-8')
                     price = self._getPrice(html)
                     ended = self._ifEnded(html)
-                    print("Checking " + key + " price: " + str(price) + " Ended: " + str(ended))
+                    # print("Checking " + key + "\nprice: " + str(price) + " Ended: " + str(ended))
 
                     # Send email saying price dropped by set amount or it ended
-                    if abs(self._links[key][1] - price) >= self._links[key][2] and self._links[key][1] != -1:
+                    if abs(self._links[key][1] - price) >= self._links[key][2] and self._links[key][1] != -1 or ended:
                         # Create Server
                         server = smtplib.SMTP('smtp.gmail.com', 587)
                         server.starttls()
@@ -113,9 +113,10 @@ class EbayWatcher:
 
                         text = message.as_string()
                         server.sendmail(self.emailFrom, self.emailTo, text)
+                        # print("Sent email")
                         server.quit()
 
-                        print(key, "went from " + str(self._links[key][1]) + " to " + str(price))
+                        # print(key, "went from " + str(self._links[key][1]) + " to " + str(price))
 
                     if ended:
                         self._links[key] = [True, price, self._links[key][2], self._links[key][3], True]
@@ -128,3 +129,4 @@ class EbayWatcher:
     def end(self):
         print("end")
         self._loop = False
+
