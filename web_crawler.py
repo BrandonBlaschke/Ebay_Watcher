@@ -127,6 +127,6 @@ class EbayWatcher:
 
     """ Ends the EbayWatcher """
     def end(self):
-        print("end")
+        # print("end")
         self._loop = False
 
