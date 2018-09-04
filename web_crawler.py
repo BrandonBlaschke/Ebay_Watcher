@@ -74,7 +74,7 @@ class EbayWatcher:
     def start(self):
         threading.Thread(target=self._startHelper).start()
 
-    """ Used for the multi threading to start another watcher """
+    """ Used for the multi threading to start another watcher. If login fails prints error message to console"""
     def _startHelper(self):
         # Loop for program
         self._loop = True
@@ -99,7 +99,7 @@ class EbayWatcher:
                         try:
                             server.login(self.emailFrom, self.emailPassword)
                         except smtplib.SMTPAuthenticationError:
-                            print("ERROR: Invalid Login")
+                            print("ERROR: Invalid Login for " + self.emailFrom)
                             continue
 
                         # Construct Message
