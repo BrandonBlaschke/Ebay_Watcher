@@ -96,7 +96,11 @@ class EbayWatcher:
                         # Create Server
                         server = smtplib.SMTP('smtp.gmail.com', 587)
                         server.starttls()
-                        server.login(self.emailFrom, self.emailPassword)
+                        try:
+                            server.login(self.emailFrom, self.emailPassword)
+                        except smtplib.SMTPAuthenticationError:
+                            print("ERROR: Invalid Login")
+                            continue
 
                         # Construct Message
                         message = MIMEMultipart()
@@ -115,7 +119,6 @@ class EbayWatcher:
                         server.sendmail(self.emailFrom, self.emailTo, text)
                         # print("Sent email")
                         server.quit()
-
                         # print(key, "went from " + str(self._links[key][1]) + " to " + str(price))
 
                     if ended:
@@ -129,4 +132,3 @@ class EbayWatcher:
     def end(self):
         # print("end")
         self._loop = False
-
